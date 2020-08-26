@@ -1,0 +1,26 @@
+---
+# ***************************************
+#
+# * Linux Configuration Playbooks
+#
+# ***************************************
+
+# Prepare CentOS based Linux hosts
+- hosts: linux
+  user: debian
+  become: yes
+  vars:
+    with_proxy: false
+    with_podman: false
+    with_nginx: false
+    theuser: "debian"
+  environment:
+#    HTTP_PROXY: http://proxy.example.com:3128
+#    https_proxy: http://proxy.example.com:3128
+#    http_proxy: http://proxy.example.com:3128
+#    HTTPS_PROXY: http://proxy.example.com:3128
+  roles:
+    - roles/preconfig
+    - roles/containers
+    - roles/nginx
+

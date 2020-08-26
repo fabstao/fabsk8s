@@ -1,0 +1,45 @@
+---
+# tasks file for swmanagement
+
+- name: Customize motd
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: 'issue', dest: '/etc/issue' }
+    - { src: 'issue.net', dest: '/etc/issue.net' }
+    - { src: 'motd', dest: '/etc/motd' }
+
+- name: Update APT
+  apt:
+    update_cache: yes
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: Update OS
+  apt:
+    name: '*'
+    state: latest
+    force_apt_get: True
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: Install curl, wget, vim, tmux,nc, git, Python, neofetch
+  apt:
+    name: curl,wget,vim,tmux,netcat-openbsd,git,python3,python-pip,neofetch
+    state: present
+    force_apt_get: True
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: Upgrade system
+  yum:
+    name: '*'
+    state: latest
+  when: ansible_facts['os_family'] == "RedHat"
+
+- name: Install Git, tcpdump, nc,curl, wget, epel-release, python-setuptools and vim
+  yum:
+    name: curl,wget,vim,epel-release,git,nmap-ncat,tcpdump,python-setuptools
+    state: present
+  when: ansible_facts['os_family'] == "RedHat" and ansible_facts['lsb']['major_release']|int >= 7

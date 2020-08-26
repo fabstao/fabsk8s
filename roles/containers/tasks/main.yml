@@ -1,0 +1,57 @@
+---
+# tasks file for containers
+
+- name: Install Docker Python SDK
+  pip:
+    name: docker
+    state: present
+
+- name: Create Mountpoint for local-persist
+  file:
+    path: /mnt/docker/nginx
+    state: directory
+
+- name: Install Docker.io in Debian/Ubuntu
+  apt:
+    name: docker.io
+    state: present
+    force_apt_get: True
+  when: ansible_facts['os_family'] == "Debian"
+
+# Install Docker for vanilla K8s
+#- name: Install Podman and Buildah in Red Hat type OS
+#  yum:
+#    name: podman,buildah
+#    state: present
+#  when: ansible_facts['os_family'] == "RedHat"
+
+
+- name: Enable required kernel modules
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: 'modules', dest: '/etc/modules' }
+
+- name: Load modules right now
+  modprobe:
+    name: ip_vs,ip_vs_rr,ip_vs_wrr,ip_vs_sh_nf_conntrack
+    state: present
+
+- name: Enable required kernel parameters
+  sysctl:
+    name: net.bridge.bridge-nf-call-ip6tables
+    value: '1'
+    state: present
+    reload: yes 
+
+- name: Enable required kernel parameters
+  sysctl:
+    name: net.bridge.bridge-nf-call-iptables
+    value: '1'
+    state: present
+    reload: yes 
+
