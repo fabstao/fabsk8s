@@ -37,9 +37,9 @@
     - { src: 'modules', dest: '/etc/modules' }
 
 - name: Load modules right now
-  modprobe:
-    name: ip_vs,ip_vs_rr,ip_vs_wrr,ip_vs_sh_nf_conntrack
-    state: present
+  systemd:
+    name: systemd-modules-load
+    state: restarted
 
 - name: Enable required kernel parameters
   sysctl:

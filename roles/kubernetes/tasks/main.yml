@@ -21,8 +21,12 @@
 
 - name: Holds K8s packages
   dpkg_selections:
-    name:  kubelet,kubeadm,kubectl
+    name: "{{ item.package }}"
     selection: hold
+  with_items:
+    - { package: "kubelet" }
+    - { package: "kubeadm" }
+    - { package: "kubectl" }
 
 - name: K8s - restart kubelet
   systemd:
@@ -31,4 +35,49 @@
     name: kubelet
 
 - name: Run kubeadm
-  shell: kubeadm init --pod-network-cidr=172.19.0.0/16 --apiserver-advertise-address="{{ ansible_facts[\"eth0\"][\"ipv4\"][\"address\"] }}" --token="{{ token }}"
+  shell: kubeadm init --pod-network-cidr=172.179.0.0/16 --apiserver-advertise-address='{{ ansible_facts["enp0s8"]["ipv4"]["address"] }}' --token="{{ token }}"
+
+- name: Ensure directory exists for local self-signed TLS certs.
+  file:
+    path: "/root/.kube"
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+
+- name: Copy kubeconfig
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: /root/.kube/config
+    mode: 0600
+    remote_src: yes
+
+- name: Download CALICO Operator YAML
+  get_url:
+    url: https://docs.projectcalico.org/manifests/custom-resources.yaml
+    dest: /root/custom-resources.yaml
+    mode: '0440'
+
+- name: Configure IP CIDR for Calico
+  replace:
+    path: /root/custom-resources.yaml
+    regexp: '192\.168'
+    replace: '172.179'
+
+- name: Apply Tigera Operator manifest
+  shell: kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml
+
+- name: Apply Calico manifest
+  shell: kubectl create -f /root/custom-resources.yaml
+
+- name: Show Calico pods
+  shell: sleep 6 && kubectl get pods -n calico-system
+
+- name: Show Calico pods
+  shell: sleep 5 && kubectl get pods -n calico-system
+
+- name: Untaint master node
+  shell: kubectl taint nodes --all node-role.kubernetes.io/master-
+
+- name: Show nodes in cluster
+  shell: kubectl get nodes
