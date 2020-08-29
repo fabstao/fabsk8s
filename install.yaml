@@ -22,5 +22,6 @@
   roles:
     - roles/preconfig
     - roles/containers
+    - role: freehck.disable_swap
     - roles/kubernetes
 

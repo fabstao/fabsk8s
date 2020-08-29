@@ -6,11 +6,6 @@
     name: docker
     state: present
 
-- name: Create Mountpoint for local-persist
-  file:
-    path: /mnt/docker/nginx
-    state: directory
-
 - name: Install Docker.io in Debian/Ubuntu
   apt:
     name: docker.io
@@ -18,15 +13,17 @@
     force_apt_get: True
   when: ansible_facts['os_family'] == "Debian"
 
-# Install Docker for vanilla K8s
-#- name: Install Podman and Buildah in Red Hat type OS
-#  yum:
-#    name: podman,buildah
-#    state: present
-#  when: ansible_facts['os_family'] == "RedHat"
+- name: Install IPVSAdm on Red Hat/Fedora
+  yum:
+    name: ipvsadm
+    state: present
+  when: ansible_facts['os_family'] == "RedHat" 
 
+- name: Install Docker-ce via script
+  shell: curl https://get.docker.com | sh --
+  when: ansible_facts['os_family'] == "RedHat" 
 
-- name: Enable required kernel modules
+- name: Enable required kernel modules - Debian/Ubuntu
   copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -35,6 +32,18 @@
     mode: 0644
   with_items:
     - { src: 'modules', dest: '/etc/modules' }
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: Enable required kernel modules - Red Hat/Fedora
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: 'modules', dest: '/etc/modules-load.d/k8s.conf' }
+  when: ansible_facts['os_family'] == "RedHat"
 
 - name: Load modules right now
   systemd:
@@ -55,3 +64,6 @@
     state: present
     reload: yes 
 
+#- include_tasks: roles/containers/tasks/redhat.yaml
+- include_tasks: redhat.yaml
+  when: ansible_facts['os_family'] == "RedHat"

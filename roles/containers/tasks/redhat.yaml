@@ -1,0 +1,33 @@
+---
+# Include for Red Hat based
+
+- name: Open required ports
+  firewalld:
+#    zone: public
+    port: "{{ item }}"
+    permanent: yes
+    state: enabled
+  with_items:
+    - 80/tcp
+    - 443/tcp
+    - 6443/tcp
+    - 2379-2380/tcp
+    - 10250-10252/tcp
+    - 30000-32767/tcp
+  when: ansible_facts['os_family'] == "RedHat"
+
+- name: Reload firewalld
+  systemd:
+    name: firewalld
+    state: restarted
+    enabled: yes
+  when: ansible_facts['os_family'] == "RedHat"
+
+- name: Enable Docker - systemd
+  systemd:
+    name: docker
+    state: restarted
+    enabled: yes
+  when: ansible_facts['os_family'] == "RedHat"
+
+

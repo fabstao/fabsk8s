@@ -1,41 +1,21 @@
 ---
 # tasks file for kubernetes
 
-- name: Add K8s signing apt key
-  apt_key:
-    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
-    state: present
+- include_tasks: debian.yaml
   when: ansible_facts['os_family'] == "Debian"
 
-- name: Add K8s APT repo
-  apt_repository:
-    repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
-    state: present
-  when: ansible_facts['os_family'] == "Debian"
-
-- name: Install K8s
-  apt:
-    name: kubelet,kubeadm,kubectl
-    state: present
-  when: ansible_facts['os_family'] == "Debian"
-
-- name: Holds K8s packages
-  dpkg_selections:
-    name: "{{ item.package }}"
-    selection: hold
-  with_items:
-    - { package: "kubelet" }
-    - { package: "kubeadm" }
-    - { package: "kubectl" }
+- include_tasks: redhat.yaml
+  when: ansible_facts['os_family'] == "RedHat"
 
 - name: K8s - restart kubelet
   systemd:
     state: restarted
     daemon_reload: yes
+    enabled: yes
     name: kubelet
 
 - name: Run kubeadm
-  shell: kubeadm init --pod-network-cidr=172.179.0.0/16 --apiserver-advertise-address='{{ ansible_facts["enp0s8"]["ipv4"]["address"] }}' --token="{{ token }}"
+  shell: kubeadm init --pod-network-cidr=172.179.0.0/16 --apiserver-advertise-address='{{ ansible_ssh_host }}' --token="{{ token }}"
 
 - name: Ensure directory exists for local self-signed TLS certs.
   file:
