@@ -61,3 +61,9 @@
 
 - name: Show nodes in cluster
   shell: kubectl get nodes
+
+- name: Finally, retrieve kubeconfig
+  fetch:
+    src: /etc/kubernetes/admin.conf
+    dest: kubeconfig
+    mode: 0600
