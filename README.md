@@ -31,7 +31,7 @@ AIO Kubernetes installer (say no to minikube) which can be deployed on bare meta
 1. Clone this repo
 2. Edit the hosts inventory file, follow the template (specify private key file, desired hostname and IP address of the cluster interface)
 3. Execute: `ansible-playbook -i hosts install.yaml`
-4. Retrieve kubeconfig from AIO host to your $HOME/.kube folder as per kubernetes.io instructions
+4. ~Retrieve kubeconfig from AIO host to your $HOME/.kube folder as per kubernetes.io instructions~
 5. (Optional) Execute `deployDashboard.sh` and use the printed token to access Kubernetes UI dashboard
 
 ## TODO
