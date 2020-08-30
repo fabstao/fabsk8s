@@ -1,0 +1,40 @@
+# Fabs Kubernetes Installer - Ansible based
+--------------------
+
+AIO Kubernetes installer (say no to minikube) which can be deployed on bare metal or VMs.
+
+## Supported platforms:
+
+* Debian based
+* RPM based (Fedora, CentOS, etc)
+
+## Tested platforms:
+
+* Fedora 32
+* Debian 
+
+## Usage:
+
+### Prerequisites
+
+* Ansible 2.9
+* Debian or Fedora32 host with minimum 7 GB of RAM, 3 vCPUs and 25 GB od free disk for AIO demo
+* bash
+
+### Steps
+
+1. clone this repo
+2. Edit the hosts inventory file, follow the template
+3. Execute: `ansible-playbook -i hosts install
+
+## TODO
+
+* Add dashboard deployment
+* Add ingress
+* Test multi node cluster deployment
+* Formal Documentation
+
+### Author
+
+(C) 2020 Fabian Salamanca <fabs@koalatechie.com>
+
