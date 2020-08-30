@@ -24,6 +24,7 @@ AIO Kubernetes installer (say no to minikube) which can be deployed on bare meta
 * ssh key pair already installed on the AIO host
 * sudo passwordless on the AIO host (similar to cloud instances like in AWS or Openstack)
 * kubectl client installed on Ansible controller
+* On Fedora 32 systems, add: `systemd.unified_cgroup_hierarchy=0` to GRUB_CMDLINE_LINUX in /etc/default/grub
 
 ### Steps
 
