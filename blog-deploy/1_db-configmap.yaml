@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  labels:
+    app: postgres
+data:
+  POSTGRES_DB: fabsgoblogdb
+  POSTGRES_USER: fabs
+  POSTGRES_PASSWORD: austin23

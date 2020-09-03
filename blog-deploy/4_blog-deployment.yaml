@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fabsgoblog
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fabsgoblog
+  template:
+    metadata:
+      labels:
+        app: fabsgoblog
+    spec:
+      containers:
+        - name: fabsgoblog
+          image: "quay.io/fabstao/fabsgoblog"
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 8019
+          envFrom:
+            - configMapRef:
+                name: blog-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fabsgoblog
+  labels:
+    app: fabsgoblog
+spec:
+  selector:
+    app: fabsgoblog
+  ports:
+    - protocol: TCP
+      port: 8019
+      targetPort: 8019

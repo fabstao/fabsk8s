@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fabsgoblog-direct
+  labels:
+    app: fabsgoblog
+spec:
+  selector:
+    app: fabsgoblog
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 8019
+      targetPort: 8019

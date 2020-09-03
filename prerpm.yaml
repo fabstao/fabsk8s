@@ -5,15 +5,12 @@
 #
 # ***************************************
 
-# On RedHat based OS, run first prerpm.yaml playbook
-
+# Prepare RedHat based Linux hosts
 - hosts: linux
   user: fsalaman
   become: yes
   vars:
     with_proxy: false
-    with_containers: true
-    with_kubernetes: true
     theuser: "root"
   environment:
 #    HTTP_PROXY: http://proxy.example.com:3128
@@ -21,8 +18,4 @@
 #    http_proxy: http://proxy.example.com:3128
 #    HTTPS_PROXY: http://proxy.example.com:3128
   roles:
-    - roles/preconfig
-    - roles/containers
-    - role: freehck.disable_swap
-    - roles/kubernetes
-
+    - roles/prerpm

@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: blog-ingress
+  #labels:
+    #app.kubernetes.io/name: ingress-nginx
+    #app.kubernetes.io/instance: ingress-nginx
+spec:
+  rules:
+  - host: "fabs.raketo.info"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          serviceName: fabsgoblog
+          servicePort: 8019

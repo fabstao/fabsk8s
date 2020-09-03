@@ -1,0 +1,31 @@
+---
+# tasks file for prerpm
+
+- name: Upgrade system
+  yum:
+    name: '*'
+    state: latest
+  when: ansible_facts['os_family'] == "RedHat"
+
+- name: Install Git, tcpdump, nc,curl, wget, tmux, python3, python-setuptools and vim
+  yum:
+    name: curl,wget,vim,git,nmap-ncat,tcpdump,python-setuptools,python3
+    state: present
+  when: ansible_facts['os_family'] == "RedHat" 
+
+- name: Install epel-release
+  yum:
+    name: epel-release
+    state: present
+  when: ansible_distribution == 'RedHat' or ansible_distribution == 'CentOS'
+
+
+- name: Install grubby on RedHat based OS
+  yum:
+    name: grubby
+    state: present
+  when: ansible_facts['os_family'] == "RedHat" 
+
+- name: Update GRUB for systemd required cgroup hierarchy
+  shell: grubby --update-kernel=ALL --args="systemd.unified_cgroup_hierarchy=0"
+  when: ansible_facts['os_family'] == "RedHat" 

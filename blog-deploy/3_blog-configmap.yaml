@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: blog-config
+  labels:
+    app: fabsgoblog
+data:
+  SITEKEY: "6LdR07EZAAAAAG594Nlkla3OhEXE-6DOzvip5avv"
+  FGOSECRET: "Tequ1squiapan"
+  PASSWD_ADMIN: "fabsgobl0g"
+  CDOMAIN: "raketo.info"
+  DBHOST: "postgres"
+  DBPORT: "5432"
+  DBNAME: "fabsgoblogdb"
+  DBUSER: "fabs"
+  DBPASSWD: "austin23"
+  PORT: "8019"
