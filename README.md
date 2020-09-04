@@ -29,7 +29,7 @@ AIO Kubernetes installer (say no to minikube) which can be deployed on bare meta
 
 1. Clone this repo
 2. Edit the hosts inventory file, follow the template (specify private key file, desired hostname and IP address of the cluster interface)
-3. On Fedora systems execute: `ansible-playbook -i hosts prerpm.yaml`
+3. On Fedora systems execute: `ansible-playbook -i hosts prerpm.yaml` then REBOOT
 4. Execute: `ansible-playbook -i hosts install.yaml`
 5. Playbook will retrieve kubeconfig file to current directory, you should have a matching version installation of kubectl client
 6. (Optional) Execute `deployDashboard.sh` and use the printed token to access Kubernetes UI dashboard
