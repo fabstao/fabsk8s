@@ -13,15 +13,28 @@
     force_apt_get: True
   when: ansible_facts['os_family'] == "Debian"
 
-- name: Install IPVSAdm on Red Hat/Fedora
+- name: Install dnf-plugins-core
   yum:
-    name: ipvsadm
+    name: dnf-plugins-core
     state: present
   when: ansible_facts['os_family'] == "RedHat" 
 
-- name: Install Docker-ce via script
-  shell: curl https://get.docker.com | sh --
+- name: Add Docker DNF Repo
+  yum_repository:
+    name: Docker.io
+    description: Docker CE repo
+    baseurl: https://download.docker.com/linux/fedora/31/x86_64/stable/
+    gpgcheck: no
+
+- name: Install dnf-plugins-core
+  yum:
+    name: docker-ce,docker-ce-cli,containerd.io
+    state: present
   when: ansible_facts['os_family'] == "RedHat" 
+
+#- name: Install Docker-ce via script
+#  shell: curl https://get.docker.com | sh --
+#  when: ansible_facts['os_family'] == "RedHat" 
 
 - name: Enable required kernel modules - Debian/Ubuntu
   copy:
@@ -34,7 +47,7 @@
     - { src: 'modules', dest: '/etc/modules' }
   when: ansible_facts['os_family'] == "Debian"
 
-- name: Enable required kernel modules - Red Hat/Fedora
+- name: Enable required kernel modules - Red Hat/RedHat
   copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -64,6 +77,6 @@
     state: present
     reload: yes 
 
-#- include_tasks: roles/containers/tasks/redhat.yaml
-- include_tasks: redhat.yaml
+#- include_tasks: roles/containers/tasks/fedora.yaml
+- include_tasks: fedora.yaml
   when: ansible_facts['os_family'] == "RedHat"

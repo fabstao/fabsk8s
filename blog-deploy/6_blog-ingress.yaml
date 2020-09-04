@@ -4,13 +4,13 @@ metadata:
   name: blog-ingress
 spec:
   rules:
-  - host: "fabs.raketo.info"
+  - host: "fedblog.raketo.info"
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: fabsgoblog-svc
+            name: fabsgoblog
             port:
               number: 8019

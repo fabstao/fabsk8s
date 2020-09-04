@@ -1,5 +1,5 @@
 ---
-# Include for Red Hat based
+# Include for RedHat based
 
 - name: Open required ports
   firewalld:
@@ -19,8 +19,8 @@
 - name: Reload firewalld
   systemd:
     name: firewalld
-    state: restarted
-    enabled: yes
+    state: stopped
+    enabled: no
   when: ansible_facts['os_family'] == "RedHat"
 
 - name: Enable Docker - systemd
