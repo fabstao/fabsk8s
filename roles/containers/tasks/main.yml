@@ -19,16 +19,25 @@
     state: present
   when: ansible_facts['os_family'] == "RedHat" 
 
-- name: Add Docker DNF Repo
+- name: Add Docker DNF Repo (Fedora)
   yum_repository:
     name: Docker.io
     description: Docker CE repo
     baseurl: https://download.docker.com/linux/fedora/31/x86_64/stable/
     gpgcheck: no
+  when: ansible_distribution == "Fedora"
+
+- name: Add Docker DNF Repo (CentOS 8)
+  yum_repository:
+    name: Docker.io
+    description: Docker CE repo
+    baseurl: https://download.docker.com/linux/centos/8/x86_64/stable/
+    gpgcheck: no
+  when: ansible_distribution == "CentOS 8"
 
 - name: Install dnf-plugins-core
   yum:
-    name: docker-ce,docker-ce-cli,containerd.io
+    name: docker-ce,containerd.io
     state: present
   when: ansible_facts['os_family'] == "RedHat" 
 
@@ -47,7 +56,7 @@
     - { src: 'modules', dest: '/etc/modules' }
   when: ansible_facts['os_family'] == "Debian"
 
-- name: Enable required kernel modules - Red Hat/RedHat
+- name: Enable required kernel modules - Red Hat/CentOS
   copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -78,5 +87,5 @@
     reload: yes 
 
 #- include_tasks: roles/containers/tasks/fedora.yaml
-- include_tasks: fedora.yaml
+- include_tasks: rpmbased.yml
   when: ansible_facts['os_family'] == "RedHat"
