@@ -1,4 +1,7 @@
 kubeconfig
 .env
 hosts
+<<<<<<< HEAD
 venv
+=======
+>>>>>>> c8e8a1d (Added requirements.txt)
