@@ -54,3 +54,4 @@
     src: /etc/kubernetes/admin.conf
     dest: kubeconfig
     mode: 0600
+    flat: yes

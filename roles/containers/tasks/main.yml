@@ -30,3 +30,9 @@
     value: '1'
     state: present
     reload: yes 
+
+- name: Enable Docker
+  systemd:
+    name: docker
+    state: started
+    enabled: yes
