@@ -1,0 +1,22 @@
+---
+# tasks file for kubernetes
+
+- name: Ensure directory exists for discovery file
+  file:
+    path: "/root/.kube"
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+
+- name: Copy kubeconfig
+  copy:
+    src: kubeconfig
+    dest: /root/.kube/config
+    mode: 0600
+
+- name: Run kubeadm join
+  shell: kubeadm join --discovery-file /root/.kube/config
+
+- name: Show nodes in cluster
+  shell: kubectl get nodes
