@@ -6,66 +6,11 @@
     name: docker
     state: present
 
-- name: Install Docker.io in Debian/Ubuntu
-  apt:
-    name: docker.io
-    state: present
-    force_apt_get: True
-  when: ansible_facts['os_family'] == "Debian"
-
-- name: Install dnf-plugins-core
-  yum:
-    name: dnf-plugins-core
-    state: present
-  when: ansible_facts['os_family'] == "RedHat" 
-
-- name: Add Docker DNF Repo (Fedora)
-  yum_repository:
-    name: Docker.io
-    description: Docker CE repo
-    baseurl: https://download.docker.com/linux/fedora/31/x86_64/stable/
-    gpgcheck: no
-  when: ansible_distribution == "Fedora"
-
-- name: Add Docker DNF Repo (CentOS 8)
-  yum_repository:
-    name: Docker.io
-    description: Docker CE repo
-    baseurl: https://download.docker.com/linux/centos/8/x86_64/stable/
-    gpgcheck: no
-  when: ansible_distribution == "CentOS 8"
-
-- name: Install dnf-plugins-core
-  yum:
-    name: docker-ce,containerd.io
-    state: present
-  when: ansible_facts['os_family'] == "RedHat" 
-
-#- name: Install Docker-ce via script
-#  shell: curl https://get.docker.com | sh --
-#  when: ansible_facts['os_family'] == "RedHat" 
-
-- name: Enable required kernel modules - Debian/Ubuntu
-  copy:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    owner: root
-    group: root
-    mode: 0644
-  with_items:
-    - { src: 'modules', dest: '/etc/modules' }
-  when: ansible_facts['os_family'] == "Debian"
-
-- name: Enable required kernel modules - Red Hat/CentOS
-  copy:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    owner: root
-    group: root
-    mode: 0644
-  with_items:
-    - { src: 'modules', dest: '/etc/modules-load.d/k8s.conf' }
+- include_tasks: rpmbased.yml
   when: ansible_facts['os_family'] == "RedHat"
+
+- include_tasks: debian.yml
+  when: ansible_facts['os_family'] == "Debian"
 
 - name: Load modules right now
   systemd:
@@ -85,7 +30,3 @@
     value: '1'
     state: present
     reload: yes 
-
-#- include_tasks: roles/containers/tasks/fedora.yaml
-- include_tasks: rpmbased.yml
-  when: ansible_facts['os_family'] == "RedHat"

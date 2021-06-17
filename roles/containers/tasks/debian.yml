@@ -1,0 +1,18 @@
+---
+- name: Install Docker.io in Debian/Ubuntu
+  apt:
+    name: docker.io
+    state: present
+    force_apt_get: True
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: Enable required kernel modules - Debian/Ubuntu
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: 'modules', dest: '/etc/modules' }
+  when: ansible_facts['os_family'] == "Debian"
