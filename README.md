@@ -11,6 +11,7 @@ AIO Kubernetes installer (say no to minikube) which can be deployed on bare meta
 
 ## Tested platforms:
 
+* CentOS 8 Stream
 * Fedora 32
 * Debian 
 
@@ -19,7 +20,7 @@ AIO Kubernetes installer (say no to minikube) which can be deployed on bare meta
 ### Prerequisites
 
 * Ansible 2.9
-* Debian or Fedora32 host with minimum 8 GB of RAM, 3 vCPUs and 25 GB od free disk for AIO demo
+* Minimum 8 GB of RAM, 3 vCPUs and 25 GB od free disk for AIO demo
 * bash
 * ssh key pair already installed on the AIO host
 * sudo passwordless on the AIO host (similar to cloud instances like in AWS or Openstack)
@@ -29,7 +30,7 @@ AIO Kubernetes installer (say no to minikube) which can be deployed on bare meta
 
 1. Clone this repo
 2. Edit the hosts inventory file, follow the template (specify private key file, desired hostname and IP address of the cluster interface)
-3. On Fedora systems execute: `ansible-playbook -i hosts prerpm.yaml` then REBOOT
+3. On RPM/DNF based systems execute: `ansible-playbook -i hosts prerpm.yaml` then REBOOT
 4. Execute: `ansible-playbook -i hosts install.yaml`
 5. Playbook will retrieve kubeconfig file to current directory, you should have a matching version installation of kubectl client
 6. (Optional) Execute `deployDashboard.sh` and use the printed token to access Kubernetes UI dashboard
@@ -42,5 +43,6 @@ AIO Kubernetes installer (say no to minikube) which can be deployed on bare meta
 
 ### Author
 
-(C) 2020 Fabian Salamanca <fabs@koalatechie.com>
+(C) 2020 Fabian Salamanca <fabs@yunefo.tech>
+https://www.yunefo.tech 
 
