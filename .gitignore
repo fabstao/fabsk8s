@@ -1,3 +1,4 @@
 kubeconfig
 .env
 hosts
+venv
