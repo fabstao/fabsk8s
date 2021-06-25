@@ -1,6 +1,45 @@
 ---
 # Include for RedHat based
 
+- name: Install dnf-plugins-core
+  yum:
+    name: dnf-plugins-core
+    state: present
+  when: ansible_facts['os_family'] == "RedHat" 
+
+- name: Add Docker DNF Repo (Fedora)
+  yum_repository:
+    name: Docker.io
+    description: Docker CE repo
+    baseurl: https://download.docker.com/linux/fedora/34/x86_64/stable/
+    gpgcheck: no
+  when: ansible_distribution == "Fedora"
+
+- name: Add Docker DNF Repo (CentOS 8)
+  yum_repository:
+    name: Docker.io
+    description: Docker CE repo
+    baseurl: https://download.docker.com/linux/centos/8/x86_64/stable/
+    gpgcheck: no
+  when: ansible_distribution == "CentOS 8"
+
+- name: Install Docker (RPM)
+  yum:
+    name: docker-ce,containerd.io
+    state: present
+  when: ansible_facts['os_family'] == "RedHat" 
+
+- name: Enable required kernel modules - Red Hat/CentOS
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: 'modules', dest: '/etc/modules-load.d/k8s.conf' }
+  when: ansible_facts['os_family'] == "RedHat"
+
 - name: Open required ports
   firewalld:
 #    zone: public
