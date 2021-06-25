@@ -6,8 +6,8 @@
 # ***************************************
 
 # Prepare RedHat based Linux hosts
-- hosts: linux
-  user: fsalaman
+- hosts: all
+  user: centos
   become: yes
   vars:
     with_proxy: false

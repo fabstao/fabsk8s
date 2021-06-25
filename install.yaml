@@ -8,7 +8,7 @@
 # On RedHat based OS, run first prerpm.yaml playbook
 
 - hosts: all
-  user: fsalaman
+  user: centos
   become: yes
   vars:
     with_proxy: false
@@ -27,7 +27,7 @@
     - roles/kubernetes
 
 - hosts: masters
-  user: fsalaman
+  user: centos
   become: yes
   vars:
     with_proxy: false
@@ -43,7 +43,7 @@
     - roles/masters
 
 - hosts: workers
-  user: fsalaman
+  user: centos
   become: yes
   vars:
     with_proxy: false
