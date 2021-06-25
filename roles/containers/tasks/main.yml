@@ -6,10 +6,6 @@
     name: docker
     state: present
 
-<<<<<<< HEAD
-- include_tasks: rpmbased.yml
-  when: ansible_facts['os_family'] == "RedHat"
-=======
 - name: Install Docker.io in Debian/Ubuntu
   apt:
     name: docker.io
