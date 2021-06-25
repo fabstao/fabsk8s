@@ -3,9 +3,13 @@ kubeconfig
 hosts
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 venv
 =======
 >>>>>>> c8e8a1d (Added requirements.txt)
 =======
 venv
 >>>>>>> 3cc988a (Updates)
+=======
+venv
+>>>>>>> 3cc988a69accde87e92dd2af3d03e01bb032e140

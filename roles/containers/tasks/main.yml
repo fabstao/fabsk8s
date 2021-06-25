@@ -54,7 +54,10 @@
   when: ansible_facts['os_family'] == "Debian"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 3cc988a69accde87e92dd2af3d03e01bb032e140
 - name: Enable required kernel modules - Red Hat/CentOS
   copy:
     src: "{{ item.src }}"
