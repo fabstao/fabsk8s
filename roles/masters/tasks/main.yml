@@ -2,7 +2,7 @@
 # tasks file for kubernetes
 
 - name: Run kubeadm
-  shell: kubeadm init --pod-network-cidr=172.179.0.0/16 --apiserver-advertise-address='{{ ansible_ssh_host }}' --token="{{ token }}"
+  shell: kubeadm init --pod-network-cidr=172.179.0.0/16 --apiserver-advertise-address=0.0.0.0 --token="{{ token }}"
 
 - name: Ensure directory exists for local self-signed TLS certs.
   file:
