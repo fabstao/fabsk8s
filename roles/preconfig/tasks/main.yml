@@ -34,9 +34,9 @@
     force_apt_get: True
   when: ansible_facts['os_family'] == "Debian"
 
-- name: Install curl, wget, vim, tmux,nc, git, Python, neofetch
+- name: Install curl, wget, vim, tmux,nc, git, Python, neofetch, libvirt, haproxy, keepalived
   apt:
-    name: curl,wget,vim,tmux,netcat-openbsd,git,python3,python3-pip,neofetch
+    name: curl,wget,vim,tmux,netcat-openbsd,git,python3,python3-pip,neofetch, libvirt-clients, libvirt-daemon, haproxy, keepalived
     state: present
     force_apt_get: True
   when: ansible_facts['os_family'] == "Debian"

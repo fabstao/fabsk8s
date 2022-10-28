@@ -10,7 +10,7 @@ ff02::2     ip6-allrouters
 
 # Kubernetes nodes
 {% for host in ansible_play_hosts %}
-{% if 'ansible_enp0s3' in hostvars[host] %}
-{{ hostvars[host]['ansible_enp0s3']['ipv4']['address'] }}  {{ host }}
+{% if 'ansible_enp1s0' in hostvars[host] %}
+{{ hostvars[host]['ansible_enp1s0']['ipv4']['address'] }}  {{ host }}
 {% endif %}
 {% endfor %}

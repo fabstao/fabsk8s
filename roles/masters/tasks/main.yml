@@ -29,7 +29,7 @@
   replace:
     path: /root/custom-resources.yaml
     regexp: '192\.168'
-    replace: '172.179'
+    replace: '172\.179'
 
 - name: Apply Tigera Operator manifest
   shell: kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml
